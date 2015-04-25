@@ -61,6 +61,13 @@ public class MainActivity extends ActionBarActivity {
 
         ArrayAdapter<String> mForecastAdapter;
 
+
+
+        //Log.i("Declared Array Adapter","Done");
+
+
+
+
         public PlaceholderFragment() {
         }
 
@@ -68,6 +75,9 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            //Log.i("inflater","Done");
+
 
             String[] forecastArray ={
                     "Today - Sunny - 25-35",
@@ -101,9 +111,12 @@ public class MainActivity extends ActionBarActivity {
                     R.id.list_item_forecast_textview,
                     weekForecast);
 
+
+
             ListView listview = (ListView) rootView.findViewById(R.id.listview_forecast);
             listview.setAdapter(mForecastAdapter);
 
+            //Log.i("setAdapter", "Done");
 
             return rootView;
         }

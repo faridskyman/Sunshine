@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="openWeatherMap_APPID_API_KEY">a58165052be4c61d02c85544c9ddb3f4</string>
+
+    <!--
+    <string name="weatherWebservice7Days">http://api.openweathermap.org/data/2.5/forecast/daily?q=Singapore&mode=xml&units=metric&cnt=7</string>
+    -->
+</resources>
