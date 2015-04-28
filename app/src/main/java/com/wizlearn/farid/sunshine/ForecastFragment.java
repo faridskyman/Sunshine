@@ -75,7 +75,7 @@ public class ForecastFragment extends Fragment {
     {
 
         String[] data ={
-                "loading data...",
+                "loading data....",
 
 
         };
