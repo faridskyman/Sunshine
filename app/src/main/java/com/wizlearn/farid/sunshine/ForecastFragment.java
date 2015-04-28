@@ -1,5 +1,6 @@
 package com.wizlearn.farid.sunshine;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,10 +75,8 @@ public class ForecastFragment extends Fragment {
     {
 
         String[] data ={
-                "FAKE DATA",
-                "Hit Refresh to get actual data",
-                "Data is for singapore",
-                "END of FAKE Data",
+                "loading data...",
+
 
         };
 
@@ -92,6 +93,19 @@ public class ForecastFragment extends Fragment {
 
         ListView listview = (ListView) rootView.findViewById(R.id.listview_forecast);
         listview.setAdapter(forecastAdapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //get the item selected
+                String forecast = forecastAdapter.getItem(position);
+                Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        // load actual data on initial run
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        weatherTask.execute("singapore");
 
         //Log.i("setAdapter", "Done");
 
@@ -307,9 +321,13 @@ public class ForecastFragment extends Fragment {
         protected void onPostExecute(String[] result) {
             if(result !=null){
                 forecastAdapter.clear();
-                for(String dayForecastStr : result){
+                /*for(String dayForecastStr : result){
                     forecastAdapter.add(dayForecastStr);
-                }
+                }*/
+                //honeycomb and above support this.
+                // this is more efficient as it only refresh textview once
+                // instead of everytime a record is added.
+                forecastAdapter.addAll(result);
             }
         }
 
