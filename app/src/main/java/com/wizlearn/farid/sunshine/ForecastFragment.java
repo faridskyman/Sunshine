@@ -1,6 +1,7 @@
 package com.wizlearn.farid.sunshine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -98,7 +99,10 @@ public class ForecastFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //get the item selected
                 String forecast = forecastAdapter.getItem(position);
-                Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(intent);
 
             }
         });
@@ -158,6 +162,8 @@ public class ForecastFragment extends Fragment {
             final String OWM_MAX = "max";
             final String OWM_MIN = "min";
             final String OWM_DESCRIPTION = "main";
+
+
 
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
@@ -235,6 +241,7 @@ public class ForecastFragment extends Fragment {
                 String format = "json";
                 String units = "metric";
                 int numDays = 7;
+                final String[] failData  ={"Unable to load Data from api.openweathermap.org"};
 
                 try {
                     // Construct the URL for the OpenWeatherMap query
@@ -245,6 +252,7 @@ public class ForecastFragment extends Fragment {
                 final String FORMAT_PARAM = "mode";
                 final String UNITS_PARAM = "units";
                 final String DAYS_PARAM = "cnt";
+
 
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])
@@ -270,7 +278,8 @@ public class ForecastFragment extends Fragment {
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
                     // Nothing to do.
-                    return null;
+                    //return null;
+                    return failData;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -284,7 +293,8 @@ public class ForecastFragment extends Fragment {
 
                 if (buffer.length() == 0) {
                     // Stream was empty.  No point in parsing.
-                    return null;
+                    //return null;
+                    return failData;
                 }
                 forecastJsonStr = buffer.toString();
                 //Log.v(LOG_TAG, "Forecast Data JSOn String:" + forecastJsonStr);
@@ -292,7 +302,9 @@ public class ForecastFragment extends Fragment {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
                 // to parse it.
-                return null;
+                //return null;
+                return failData;
+
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
@@ -313,7 +325,8 @@ public class ForecastFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            return null;
+            //return null;
+            return failData;
         }
 
 
