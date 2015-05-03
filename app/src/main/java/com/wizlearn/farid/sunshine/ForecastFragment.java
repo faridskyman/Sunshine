@@ -2,9 +2,11 @@ package com.wizlearn.farid.sunshine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -60,11 +62,33 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.action_refresh){
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("singapore");
+
+            updateWeather();
+
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void updateWeather(){
+
+        //clears data
+        clearsTextViewList();
+        //get latest data.
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        //get location data from shared pref.
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        weatherTask.execute(location);
+    }
+
+    private void clearsTextViewList(){
+        //clear result, add loading message
+        forecastAdapter.clear();
+        String[] data ={"loading data....",};
+        forecastAdapter.addAll(data);
     }
 
 
@@ -75,12 +99,7 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 
-        String[] data ={
-                "loading data....",
-
-
-        };
-
+        String[] data ={"loading data....",};
         List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
 
         forecastAdapter =
@@ -116,6 +135,13 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateWeather();
+
+    }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>
     {
