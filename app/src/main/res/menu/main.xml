@@ -7,4 +7,36 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_map"
+        android:title="@string/action_map"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_email"
+        android:title="@string/action_email"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_phone"
+        android:title="@string/action_phone"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/action_searchWeb"
+        android:title="@string/action_searchWeb"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sms"
+        android:title="@string/action_sms"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_webpage"
+        android:title="@string/action_webpage"
+        app:showAsAction="never" />
+
 </menu>
